@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Domossecurity — Conócenos</title>
+  <meta name="description" content="Quiénes somos, en qué trabajamos, noticias y políticas. Nuestro compromiso con los clientes." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔒</text></svg>"> 
+  <style>
+    /* Paleta en escala de grises */
+    :root {
+      --bg: #0e0f11;        /* negro suave */
+      --surface: #15171a;   /* gris muy oscuro */
+      --muted: #aeb2b8;     /* gris medio para textos secundarios */
+      --text: #f3f4f6;      /* casi blanco */
+      --line: #2a2d32;      /* borde sutil */
+      --accent: #ffffff;    /* blanco puro para énfasis */
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1200px 800px at 85% -10%, rgba(255,255,255,.06), transparent 60%),
+        var(--bg);
+      color: var(--text);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { width: min(1200px, 92%); margin: 0 auto; }
+
+    /* Header */
+    header { position: sticky; top: 0; backdrop-filter: saturate(120%) blur(8px); background: rgb(10 11 13 / .55); border-bottom: 1px solid var(--line); z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .2px; }
+    .brand .logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #2b2f36, #1b1e23); display: grid; place-items: center; box-shadow: var(--shadow); }
+    .links { display: flex; gap: 18px; }
+    .links a { color: var(--text); opacity: .9; }
+    .menu-btn { display: none; background: transparent; border: 1px solid var(--line); color: var(--text); padding: 8px 10px; border-radius: 10px; }
+    @media (max-width: 860px) { .links { display: none; } .menu-btn { display: inline-block; } }
+
+    /* Hero */
+    .hero { padding: 80px 0 50px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; }
+    .hero h1 { font-size: clamp(34px, 4.6vw, 58px); line-height: 1.06; margin: 0 0 14px; }
+    .hero p { margin: 0 0 18px; color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); }
+    .hero .panel { background: linear-gradient(180deg, rgba(255,255,255,.06), transparent 120%), var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+    .kpi { background: rgb(255 255 255 / .02); border: 1px solid var(--line); padding: 14px; border-radius: 14px; text-align: center; }
+    .kpi .big { font-size: 28px; font-weight: 800; }
+    @media (max-width: 980px) { .hero { grid-template-columns: 1fr; } }
+
+    /* Secciones base */
+    section { margin: 42px 0; }
+    h2 { margin: 0 0 12px; font-size: clamp(22px, 3.2vw, 30px); }
+    p.lead { color: var(--muted); margin: 0; }
+
+    /* Paneles informativos */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: linear-gradient(180deg, rgba(255,255,255,.06), transparent 120%), var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .card h3 { margin: 6px 0 8px; }
+    .card p { color: var(--muted); margin: 0; }
+    @media (max-width: 980px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    /* Noticias / Políticas */
+    .feed-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .chip { border: 1px solid var(--line); background: rgb(255 255 255 / .03); color: var(--text); padding: 8px 12px; border-radius: 999px; cursor: pointer; }
+    .chip.active { background: rgb(255 255 255 / .12); }
+    .feed { display: grid; gap: 12px; }
+    .item { display: grid; gap: 8px; grid-template-columns: 1fr auto; align-items: start; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: rgb(255 255 255 / .03); }
+    .item time { color: var(--muted); font-size: 14px; }
+    .badge { font-size: 12px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 999px; }
+
+    /* Carrusel */
+    .carousel { position: relative; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #0b0c0e; }
+    .carousel .viewport { position: relative; width: 100%; aspect-ratio: 16/9; }
+    .carousel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s ease; }
+    .carousel img.active { opacity: 1; }
+    .controls { display: flex; gap: 10px; position: absolute; bottom: 10px; right: 10px; }
+    .ctrl { background: rgb(0 0 0 / .5); border: 1px solid var(--line); color: var(--text); padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+    .dots { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; justify-content: center; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line); background: rgb(255 255 255 / .2); }
+    .dot.active { background: #fff; }
+
+    /* Proyectos */
+    .timeline { position: relative; margin-left: 8px; }
+    .timeline::before { content: ""; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+    .milestone { position: relative; margin: 18px 0 18px 30px; padding-left: 14px; }
+    .milestone::before { content: ""; position: absolute; left: -22px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.08); }
+
+    /* Contacto */
+    .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .field { display: grid; gap: 6px; margin: 10px 0; }
+    .input, textarea { background: rgb(255 255 255 / .03); border: 1px solid var(--line); color: var(--text); padding: 10px 12px; border-radius: 12px; }
+    textarea { min-height: 120px; resize: vertical; }
+    @media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
+
+    footer { margin: 80px 0 40px; color: var(--muted); text-align: center; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🔒</div>
+        <span>Domossecurity</span>
+      </div>
+      <nav class="links" aria-label="principal">
+        <a href="#quienes">Quiénes somos</a>
+        <a href="#paneles">Paneles</a>
+        <a href="#noticias">Noticias & Políticas</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <button class="menu-btn" aria-label="Abrir menú" onclick="toggleMenu()">Menú</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div>
+        <h1>Transparencia, seguridad y compromiso con nuestros clientes</h1>
+        <p>Somos Domossecurity. Esta página muestra cómo está conformada nuestra empresa, nuestro compromiso, políticas recientes y las noticias más relevantes de nuestro trabajo.</p>
+        <div class="kpis">
+          <div class="kpi"><div class="big" id="kpi-anios">—</div><div>Años de experiencia</div></div>
+          <div class="kpi"><div class="big">24/7</div><div>Disponibilidad</div></div>
+          <div class="kpi"><div class="big" id="kpi-proy">—</div><div>Proyectos ejecutados</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Nuestro compromiso</h3>
+        <p class="lead">Protegemos lo que más importa con procesos claros, personal capacitado y mejora continua. La confianza del cliente es el centro de nuestras decisiones.</p>
+      </div>
+    </section>
+
+    <!-- QUIÉNES SOMOS -->
+    <section id="quienes">
+      <h2>Quiénes somos</h2>
+      <p class="lead">Equipo multidisciplinario especializado en soluciones de seguridad. Trabajamos con metodologías auditables y comunicación constante con nuestros clientes.</p>
+    </section>
+
+    <!-- PANELES INFORMATIVOS -->
+    <section id="paneles">
+      <h2>Paneles informativos</h2>
+      <p class="lead">Información clave para entender cómo operamos día a día.</p>
+      <div class="grid" id="paneles-grid">
+        <!-- Render desde JS -->
+      </div>
+    </section>
+
+    <!-- NOTICIAS Y POLÍTICAS -->
+    <section id="noticias">
+      <h2>Noticias, políticas y comunicados</h2>
+      <div class="feed-controls" role="tablist" aria-label="Filtros del feed">
+        <button class="chip active" data-filter="all" role="tab" aria-selected="true">Todo</button>
+        <button class="chip" data-filter="noticia" role="tab">Noticias</button>
+        <button class="chip" data-filter="politica" role="tab">Políticas</button>
+        <button class="chip" data-filter="comunicado" role="tab">Comunicados</button>
+      </div>
+      <div class="feed" id="feed">
+        <!-- Render desde JS -->
+      </div>
+    </section>
+
+    <!-- PROYECTOS / EXPERIENCIA -->
+    <section id="proyectos">
+      <h2>Experiencia y proyectos</h2>
+      <p class="lead">Una muestra de hitos que reflejan nuestro trabajo y aprendizajes.</p>
+      <div class="timeline" id="timeline">
+        <!-- Render desde JS -->
+      </div>
+    </section>
+
+    <!-- GALERÍA / CARRUSEL -->
+    <section id="galeria">
+      <h2>Galería</h2>
+      <p class="lead">Un vistazo a nuestro equipo en terreno y nuestras instalaciones.</p>
+      <div class="carousel" aria-roledescription="carousel">
+        <div class="viewport" id="viewport" aria-live="polite">
+          <!-- Imágenes renderizadas por JS -->
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="prev" aria-label="Anterior">◀</button>
+          <button class="ctrl" id="next" aria-label="Siguiente">▶</button>
+        </div>
+        <div class="dots" id="dots" role="tablist" aria-label="Paginación del carrusel"></div>
+      </div>
+      <p class="lead" style="margin-top:10px">Reemplaza las imágenes en <code>GALLERY</code> con tus fotos reales (carpeta <kbd>/img</kbd> en tu repo) o URLs.</p>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact" aria-label="Contacto">
+      <form class="card" onsubmit="sendForm(event)">
+        <h2>Contacto</h2>
+        <p class="lead">¿Tienes dudas o quieres cotizar? Escríbenos.</p>
+        <label class="field">
+          <span>Nombre</span>
+          <input class="input" name="name" required placeholder="Tu nombre" />
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input class="input" type="email" name="email" required placeholder="tu@email.com" />
+        </label>
+        <label class="field">
+          <span>Mensaje</span>
+          <textarea name="message" placeholder="¿En qué podemos ayudarte?"></textarea>
+        </label>
+        <button class="ctrl" type="submit">Enviar</button>
+        <p id="form-status" class="lead" role="status" aria-live="polite"></p>
+      </form>
+      <aside class="card">
+        <h3>Datos de contacto</h3>
+        <p>✉️ contacto@domossecurity.com</p>
+        <p>📍 Santiago, Chile</p>
+        <hr style="border-color: var(--line)">
+        <h3>Horarios</h3>
+        <p>Lun–Vie · 9:00–18:00</p>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Domossecurity. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <script>
+    // ======== Datos (edita aquí) ========
+    const KPIS = { aniosExperiencia: 8, proyectos: 120 };
+
+    const PANELES = [
+      { titulo: 'Estructura de la empresa', texto: 'Operaciones, Proyectos, Soporte y Cumplimiento trabajan en coordinación bajo un marco de calidad y seguridad.' },
+      { titulo: 'Certificaciones y capacitación', texto: 'Entrenamiento continuo y auditorías internas para mantener estándares altos.' },
+      { titulo: 'Respuesta y soporte', texto: 'Mesa de ayuda 24/7, SLA definidos y trazabilidad de incidentes.' },
+      { titulo: 'Seguridad de la información', texto: 'Controles de acceso, backups y políticas de privacidad actualizadas.' },
+      { titulo: 'Salud y seguridad laboral', texto: 'Protocolos y equipos de protección para todos los colaboradores.' },
+      { titulo: 'Sostenibilidad', texto: 'Optimización de recursos y buenas prácticas con proveedores.' },
+    ];
+
+    const FEED = [
+      { tipo: 'noticia', titulo: 'Nueva oficina de coordinación', fecha: '2025-08-12', detalle: 'Ampliamos capacidad para proyectos en la zona centro-sur.' },
+      { tipo: 'politica', titulo: 'Política de protección de datos v2.1', fecha: '2025-07-02', detalle: 'Actualizamos retención y encriptación en tránsito y reposo.' },
+      { tipo: 'comunicado', titulo: 'Compromiso con clientes PYME', fecha: '2025-05-22', detalle: 'Plan de acompañamiento y postventa dedicada.' },
+      { tipo: 'noticia', titulo: 'Cierre exitoso de proyecto crítico', fecha: '2025-03-15', detalle: 'Implementación integral concluida antes de plazo.' },
+      { tipo: 'politica', titulo: 'Política de prevención de riesgos 2025', fecha: '2025-01-10', detalle: 'Lineamientos y métricas reforzadas para terreno.' },
+    ];
+
+    const PROYECTOS = [
+      { fecha: '2025-09', titulo: 'Centro logístico — Monitoreo integral', texto: 'Diseño y ejecución de solución de seguridad perimetral y control de accesos.' },
+      { fecha: '2025-04', titulo: 'Infra crítica — Actualización y hardening', texto: 'Mejoras de continuidad operacional y respuesta a incidentes.' },
+      { fecha: '2024-11', titulo: 'Retail — Cobertura nacional', texto: 'Despliegue coordinado multi-sitio con soporte 24/7.' },
+      { fecha: '2024-05', titulo: 'Industria — Auditoría de cumplimiento', texto: 'Assessment y remediación por etapas.' },
+    ];
+
+    // Reemplaza estas imágenes por archivos reales en /img o URLs absolutas
+    const GALLERY = [
+      { src: 'https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?q=80&w=1600&auto=format&fit=crop', alt: 'Equipo trabajando en sala de control' },
+      { src: 'https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?q=80&w=1600&auto=format&fit=crop', alt: 'Infraestructura y cableado ordenado' },
+      { src: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop', alt: 'Tecnología y monitoreo' },
+      { src: 'https://images.unsplash.com/photo-1541795795328-f73a39f8d3d3?q=80&w=1600&auto=format&fit=crop', alt: 'Trabajo en terreno' }
+    ];
+
+    // ======== Render ========
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('kpi-anios').textContent = KPIS.aniosExperiencia;
+    document.getElementById('kpi-proy').textContent = KPIS.proyectos;
+
+    const grid = document.getElementById('paneles-grid');
+    PANELES.forEach(p => {
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `<h3>${p.titulo}</h3><p>${p.texto}</p>`;
+      grid.appendChild(el);
+    });
+
+    const feed = document.getElementById('feed');
+    const renderFeed = (filter = 'all') => {
+      feed.innerHTML = '';
+      FEED
+        .filter(i => filter === 'all' ? true : i.tipo === filter)
+        .sort((a,b) => b.fecha.localeCompare(a.fecha))
+        .forEach(i => {
+          const row = document.createElement('div');
+          row.className = 'item';
+          row.innerHTML = `
+            <div>
+              <strong>${i.titulo}</strong><br>
+              <time datetime="${i.fecha}">${new Date(i.fecha).toLocaleDateString('es-CL')}</time>
+              <p>${i.detalle}</p>
+            </div>
+            <span class="badge">${i.tipo.charAt(0).toUpperCase() + i.tipo.slice(1)}</span>
+          `;
+          feed.appendChild(row);
+        });
+    };
+    renderFeed();
+
+    // chips
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderFeed(btn.dataset.filter);
+      });
+    });
+
+    // timeline proyectos
+    const tl = document.getElementById('timeline');
+    PROYECTOS
+      .sort((a,b) => b.fecha.localeCompare(a.fecha))
+      .forEach(m => {
+        const el = document.createElement('div');
+        el.className = 'milestone';
+        el.innerHTML = `<strong>${m.fecha}</strong> — ${m.titulo}<p class="lead">${m.texto}</p>`;
+        tl.appendChild(el);
+      });
+
+    // Carrusel
+    const viewport = document.getElementById('viewport');
+    const dots = document.getElementById('dots');
+    let idx = 0; let timer;
+
+    function mountCarousel(){
+      viewport.innerHTML = '';
+      dots.innerHTML = '';
+      GALLERY.forEach((g,i) => {
+        const img = document.createElement('img');
+        img.src = g.src; img.alt = g.alt || `Imagen ${i+1}`;
+        if(i===0) img.classList.add('active');
+        viewport.appendChild(img);
+
+        const dot = document.createElement('button');
+        dot.className = 'dot' + (i===0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Ir a imagen ${i+1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dots.appendChild(dot);
+      });
+      auto();
+    }
+
+    function goTo(n){
+      const imgs = viewport.querySelectorAll('img');
+      imgs[idx].classList.remove('active');
+      dots.children[idx].classList.remove('active');
+      idx = (n + imgs.length) % imgs.length;
+      imgs[idx].classList.add('active');
+      dots.children[idx].classList.add('active');
+      auto();
+    }
+    function prev(){ goTo(idx - 1); }
+    function next(){ goTo(idx + 1); }
+    function auto(){ clearTimeout(timer); timer = setTimeout(() => next(), 5000); }
+
+    document.getElementById('prev').addEventListener('click', prev);
+    document.getElementById('next').addEventListener('click', next);
+    document.addEventListener('keydown', (e) => { if(e.key==='ArrowLeft') prev(); if(e.key==='ArrowRight') next(); });
+
+    mountCarousel();
+
+    // Menú móvil simple
+    function toggleMenu(){
+      const existing = document.querySelector('.links.mobile');
+      if (existing) { existing.remove(); return; }
+      const nav = document.createElement('nav');
+      nav.className = 'links mobile card';
+      nav.style.position = 'absolute';
+      nav.style.right = '4%';
+      nav.style.top = '58px';
+      nav.style.padding = '12px';
+      nav.innerHTML = `
+        <a href="#quienes">Quiénes somos</a>
+        <a href="#paneles">Paneles</a>
+        <a href="#noticias">Noticias & Políticas</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+      `;
+      document.querySelector('header .container').appendChild(nav);
+    }
+    window.toggleMenu = toggleMenu;
+
+    // Envío de formulario (demo)
+    async function sendForm(e){
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form));
+      // Integra Formspree/Netlify o tu backend aquí
+      await new Promise(r => setTimeout(r, 600));
+      document.getElementById('form-status').textContent = '¡Gracias! Hemos recibido tu mensaje.';
+      form.reset();
+    }
+  </script>
+</body>
+</html>
